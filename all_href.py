@@ -27,7 +27,7 @@ a_tags = body.find_all("a")
 #모든 a태그를 돌면서 링크가 존재하는 href속성 추출하기
 for a_tag in a_tags:
     if "href" in str(a_tag):
-        if "#" in str(a_tag) or "javascript:;" in str(a_tag) or "javascript::" in str(a_tag): #a태그 안에 링크가 존재하는지 확인
+        if "#" in str(a_tag["href"]) or "javascript:;" in str(a_tag["href"]) or "javascript::" in str(a_tag["href"]): #a태그 안에 링크가 존재하는지 확인
             continue
         else: #존재한다면 all_url리스트에 저장
             for new_href in all_url: #for문을 이용하여 리스트의 내용과 중복검사

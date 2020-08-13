@@ -7,15 +7,16 @@ from yarl import URL
 all_url = deque([])
 
 def extract_foot(body):
-    #태그명이 footer인 태그 존재 확인, 없다면 id명이 footer인 태그 존재확인 -> 제거
+    # 태그명이 footer인 태그 존재 확인, 없다면 id명이 footer인 태그 존재확인 -> 제거
     footer = body.find('footer')
     if footer == None:
         foot = body.find('div', id="footer")
         foot.extract()
     else:
         footer.extract()
-    #태그명, id명이 footer인 태그를 모두 제거한 body를 return
+    # 태그명, id명이 footer인 태그를 모두 제거한 body를 return
     return body
+
 
 # def issame(url):
 #     # for문을 이용하여 리스트의 내용과 중복검사
@@ -27,12 +28,13 @@ def extract_foot(body):
 #         isvalid_store(url)
 
 def isvalid_store(url):
-    #해당 URL이 유효한지 확인, 유효하다면 all_url 리스트에 저장
+    # 해당 URL이 유효한지 확인, 유효하다면 all_url 리스트에 저장
     try:
         requests.get(url, verify=False)
         all_url.append(url)
     except:
         pass
+
 
 def allList(url):
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -53,23 +55,23 @@ def allList(url):
 
     # 모든 a태그를 돌면서 링크가 존재하는 href속성 추출하기
     for a_tag in a_tags:
-        if "href" in str(a_tag): #a태그 안에 href속성이 존재하는지 확인
-            if a_tag["href"].startswith("http"): #정상적인 url형식인지 확인
-                isvalid_store(a_tag["href"])
-            else: #http://가 없는 href들
-                if a_tag["href"].startswith("#") or a_tag["href"].startswith("javascript:"): #공통적으로 필요없는 href들 제거
+        if "href" in str(a_tag):  # a태그 안에 href속성이 존재하는지 확인
+            if a_tag["href"].startswith("http"):  # 정상적인 url형식인지 확인
+                ch_url = a_tag["href"]
+            else:  # http://가 없는 href들
+                if a_tag["href"].startswith("#") or a_tag["href"].startswith("javascript:"):  # 공통적으로 필요없는 href들 제거
                     continue
-                else:   #http~가 없는 url에 base_url을 결합
+                else:  # http~가 없는 url에 base_url을 결합
                     if a_tag["href"].startswith("/"):
                         ch_url = base_url + a_tag["href"]
                     else:
                         ch_url = base_url + "/" + a_tag["href"]
-                    isvalid_store(ch_url)
+            isvalid_store(ch_url)
         else:
             continue
-            
-    #all_url에 저장된 모든 URL에 대해서 중복검사        
+
+    # all_url에 저장된 모든 URL에 대해서 중복검사
     my_set = set(all_url)
     return my_set
 
-allList("https://ko.wikipedia.org/wiki/%EB%8C%80%EC%99%95%ED%8C%90%EB%8B%A4")
+allList("https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=%EB%B0%B1%EC%84%B1%EC%9A%B1")

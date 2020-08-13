@@ -67,7 +67,8 @@ def allList(url):
                     isvalid_store(ch_url)
         else:
             continue
-    #리스트 반환
+            
+    #all_url에 저장된 모든 URL에 대해서 중복검사        
     my_set = set(all_url)
     return my_set
 

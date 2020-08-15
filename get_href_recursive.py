@@ -4,7 +4,6 @@ import requests
 from yarl import URL
 
 all_url = []
-cnt = 0
 
 def extract_foot(body):
     # 태그명이 footer인 태그 존재 확인, 없다면 id명이 footer인 태그 존재확인 -> 제거
@@ -31,8 +30,7 @@ def store(url):
     all_url.append(url)
     # 재웅 + 대규 코드 (true면 데이터 저장)
     # 데이터 저장한 url에 대해서 allList(url)
-    if cnt < 4:
-        allList(url)
+    allList(url)
 
 def allList(url):
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -66,8 +64,6 @@ def allList(url):
                         ch_url = base_url + a_tag["href"]
                     else:
                         ch_url = base_url + "/" + a_tag["href"]
-            global cnt
-            cnt += 1
             issame(ch_url)
         else:
             continue
